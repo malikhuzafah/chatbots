@@ -23,6 +23,11 @@ import {
 } from "react-icons/fi";
 import { IoPawOutline } from "react-icons/io5";
 
+const routes = [
+  { name: "Dashboard", link: "/dashboard", icon: FiHome },
+  { name: "My bots", link: "/dashboard/bots", icon: FiCalendar },
+];
+
 export default function Sidebar({ isOpen, onClose }) {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -50,11 +55,20 @@ export default function Sidebar({ isOpen, onClose }) {
       overflow={"hidden"}
     >
       <Flex p="5%" flexDir="column" w="100%" as="nav">
-        <NavItem
+        {routes.map((route, i) => (
+          <NavItem
+            key={i}
+            navSize={"large"}
+            icon={route.icon}
+            title={route.name}
+            link={route.link}
+            active={window.location.pathname === route.link}
+          />
+        ))}
+        {/* <NavItem
           navSize={"large"}
           icon={FiHome}
           title="Dashboard"
-          description="This is the description for the dashboard."
           link={"/"}
           active
         />
@@ -69,7 +83,7 @@ export default function Sidebar({ isOpen, onClose }) {
         <NavItem navSize={"large"} icon={IoPawOutline} title="Animals" />
         <NavItem navSize={"large"} icon={FiDollarSign} title="Stocks" />
         <NavItem navSize={"large"} icon={FiBriefcase} title="Reports" />
-        <NavItem navSize={"large"} icon={FiSettings} title="Settings" />
+        <NavItem navSize={"large"} icon={FiSettings} title="Settings" /> */}
       </Flex>
 
       <Flex p="5%" flexDir="column" w="100%" mb={4}>

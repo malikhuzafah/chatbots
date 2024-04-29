@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Box,
@@ -15,6 +15,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { BASE_URL } from "@/constants/constants";
 
 export default function Auth() {
   const router = useRouter(); // Move the useRouter hook inside the component function
@@ -23,6 +24,28 @@ export default function Auth() {
   const [errorMessage, setErrorMessage] = useState("");
   const [name, setName] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
+
+  const verifyLogin = async () => {
+    try {
+      if (localStorage.getItem("token")) {
+        const response = await axios.post(
+          `${BASE_URL}api/users/verify-login`,
+          null,
+          {
+            headers: { "x-auth-token": localStorage.getItem("token") },
+          }
+        );
+        console.log(response);
+        router.replace("/dashboard");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    verifyLogin();
+  }, []);
 
   const colorMode = useColorMode();
 
