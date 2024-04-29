@@ -16,9 +16,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <Flex flexDirection={"column-reverse"}>
+          {children}
+          {/* <Flex flexDirection={"column-reverse"}>
             <Header>{children}</Header>
-          </Flex>
+          </Flex> */}
         </Providers>
       </body>
     </html>

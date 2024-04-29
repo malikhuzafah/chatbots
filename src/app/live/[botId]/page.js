@@ -91,14 +91,22 @@ export default function BotDetails({ params }) {
   return (
     <Flex
       flexDir={"column"}
-      h={"100%"}
-      px={10}
+      h={"100vh"}
+      // px={10}
       pb={10}
       w={"100%"}
       overflow={"hidden"}
+      bgColor={"gray.100"}
     >
       <Flex h={"95%"} flexDirection={"column"}>
-        <Flex justify={"center"} w={"100%"} position={"relative"} p={5}>
+        <Flex
+          justify={"center"}
+          w={"100%"}
+          position={"relative"}
+          p={5}
+          bgColor={"white"}
+          px={10}
+        >
           <IconButton
             isRound
             icon={<IoMdArrowBack />}
@@ -112,6 +120,7 @@ export default function BotDetails({ params }) {
           </Heading>
         </Flex>
         <Flex
+          px={10}
           h={"100%"}
           flexDirection={"column-reverse"}
           overflow={"auto"}
@@ -155,7 +164,7 @@ export default function BotDetails({ params }) {
           </AnimatePresence>
         </Flex>
       </Flex>
-      <Flex>
+      <Flex px={10}>
         <InputGroup size="lg" onSubmit={sendMessage}>
           <Input
             pr="4.5rem"
