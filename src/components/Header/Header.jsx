@@ -1,8 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  IconButton,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import Sidebar from "../Sidebar/Sidebar";
+import { IoMenu } from "react-icons/io5";
 
 export default function Header({ children }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,13 +29,12 @@ export default function Header({ children }) {
           align={"center"}
         >
           {isMobile && (
-            <Button
+            <IconButton
               position={"absolute"}
               left={5}
               onClick={() => setIsOpen(true)}
-            >
-              Open
-            </Button>
+              icon={<IoMenu />}
+            />
           )}
           <Text>Home</Text>
         </Flex>

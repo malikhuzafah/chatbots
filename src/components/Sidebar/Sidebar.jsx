@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Divider,
@@ -9,19 +9,18 @@ import {
   DrawerOverlay,
   Flex,
   Heading,
+  Icon,
+  Link,
+  Menu,
+  MenuButton,
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import NavItem from "./NavItem";
-import {
-  FiHome,
-  FiCalendar,
-  FiUser,
-  FiDollarSign,
-  FiBriefcase,
-  FiSettings,
-} from "react-icons/fi";
-import { IoPawOutline } from "react-icons/io5";
+import { FiHome, FiCalendar } from "react-icons/fi";
+import { RiLogoutCircleRLine, RiRobot3Line } from "react-icons/ri";
+import CreateModal from "../Bots/CreateModal";
+import { useRouter } from "next/navigation";
 
 const routes = [
   { name: "Dashboard", link: "/dashboard", icon: FiHome },
@@ -31,15 +30,88 @@ const routes = [
 export default function Sidebar({ isOpen, onClose }) {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+
+  const router = useRouter();
+
   return isMobile ? (
     <Drawer placement={"left"} onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerHeader borderBottomWidth="1px">Basic Drawer</DrawerHeader>
         <DrawerBody>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <Flex p="5%" flexDir="column" w="100%" as="nav">
+            {routes.map((route, i) => (
+              <NavItem
+                key={i}
+                navSize={"large"}
+                icon={route.icon}
+                title={route.name}
+                link={route.link}
+                active={window.location.pathname === route.link}
+              />
+            ))}
+            <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
+              <Menu placement="right">
+                <Link
+                  onClick={() => setCreateModalOpen(true)}
+                  p={3}
+                  borderRadius={8}
+                  _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
+                  w={"100%"}
+                >
+                  <MenuButton w="100%">
+                    <Flex>
+                      <Icon
+                        as={RiRobot3Line}
+                        fontSize="xl"
+                        color={"gray.500"}
+                      />
+                      <Text ml={5}>Create Bot</Text>
+                    </Flex>
+                  </MenuButton>
+                </Link>
+              </Menu>
+            </Flex>
+            <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
+              <Menu placement="right">
+                <Link
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    router.replace("/auth");
+                  }}
+                  p={3}
+                  borderRadius={8}
+                  _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
+                  w={"100%"}
+                >
+                  <MenuButton w="100%">
+                    <Flex>
+                      <Icon
+                        as={RiLogoutCircleRLine}
+                        fontSize="xl"
+                        color={"gray.500"}
+                      />
+                      <Text ml={5}>Logout</Text>
+                    </Flex>
+                  </MenuButton>
+                </Link>
+              </Menu>
+            </Flex>
+          </Flex>
+
+          <Flex p="5%" flexDir="column" w="100%" mb={4}>
+            <Divider />
+            <Flex mt={4} align="center">
+              <Avatar size="sm" src="avatar-1.jpg" />
+              <Flex flexDir="column" ml={4}>
+                <Heading as="h3" size="sm">
+                  Sylwia Weller
+                </Heading>
+                <Text color="gray">Admin</Text>
+              </Flex>
+            </Flex>
+          </Flex>
         </DrawerBody>
       </DrawerContent>
     </Drawer>
@@ -65,25 +137,51 @@ export default function Sidebar({ isOpen, onClose }) {
             active={window.location.pathname === route.link}
           />
         ))}
-        {/* <NavItem
-          navSize={"large"}
-          icon={FiHome}
-          title="Dashboard"
-          link={"/"}
-          active
-        />
-
-        <NavItem
-          navSize={"large"}
-          icon={FiCalendar}
-          title="Your Bots"
-          link={"/bots"}
-        />
-        <NavItem navSize={"large"} icon={FiUser} title="Create Bot" />
-        <NavItem navSize={"large"} icon={IoPawOutline} title="Animals" />
-        <NavItem navSize={"large"} icon={FiDollarSign} title="Stocks" />
-        <NavItem navSize={"large"} icon={FiBriefcase} title="Reports" />
-        <NavItem navSize={"large"} icon={FiSettings} title="Settings" /> */}
+        <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
+          <Menu placement="right">
+            <Link
+              onClick={() => setCreateModalOpen(true)}
+              // href={link}
+              // backgroundColor={active && "#AEC8CA"}
+              p={3}
+              borderRadius={8}
+              _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
+              w={"100%"}
+            >
+              <MenuButton w="100%">
+                <Flex>
+                  <Icon as={RiRobot3Line} fontSize="xl" color={"gray.500"} />
+                  <Text ml={5}>Create Bot</Text>
+                </Flex>
+              </MenuButton>
+            </Link>
+          </Menu>
+        </Flex>
+        <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
+          <Menu placement="right">
+            <Link
+              onClick={() => {
+                localStorage.removeItem("token");
+                router.replace("/auth");
+              }}
+              p={3}
+              borderRadius={8}
+              _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
+              w={"100%"}
+            >
+              <MenuButton w="100%">
+                <Flex>
+                  <Icon
+                    as={RiLogoutCircleRLine}
+                    fontSize="xl"
+                    color={"gray.500"}
+                  />
+                  <Text ml={5}>Logout</Text>
+                </Flex>
+              </MenuButton>
+            </Link>
+          </Menu>
+        </Flex>
       </Flex>
 
       <Flex p="5%" flexDir="column" w="100%" mb={4}>
@@ -98,6 +196,11 @@ export default function Sidebar({ isOpen, onClose }) {
           </Flex>
         </Flex>
       </Flex>
+
+      <CreateModal
+        isOpen={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+      />
     </Flex>
   );
 }

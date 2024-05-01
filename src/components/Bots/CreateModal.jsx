@@ -3,7 +3,6 @@ import {
   Button,
   Flex,
   FormControl,
-  FormHelperText,
   FormLabel,
   Input,
   Modal,
@@ -13,48 +12,41 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
   Textarea,
 } from "@chakra-ui/react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
-export default function ({ isOpen, onClose, bot, setRefresh }) {
+export default function CreateModal({ isOpen, onClose }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [tone, setTone] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setName(bot?.name);
-    setDescription(bot?.description);
-    setTone(bot?.tone);
-  }, [bot]);
-
-  const handleUpdate = async () => {
+  const handleCreate = async () => {
     setLoading(true);
     try {
-      const response = await axios.put(
-        `${BASE_URL}api/bots/${bot?._id}`,
+      const response = await axios.post(
+        `${BASE_URL}api/bots`,
         { name, description, tone },
         { headers: { "x-auth-token": localStorage.getItem("token") } }
       );
       console.log(response);
-      setRefresh((prev) => !prev);
       setLoading(false);
+      window.location.reload();
       onClose();
     } catch (error) {
       setLoading(false);
-      console.log(error.response.data);
+      console.log(error);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={"lg"} isCentered>
+    <Modal isOpen={isOpen} size={"lg"} isCentered onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          <Text>Edit Modal</Text>
+          Create Bot
           <ModalCloseButton />
         </ModalHeader>
         <ModalBody>
@@ -84,8 +76,8 @@ export default function ({ isOpen, onClose, bot, setRefresh }) {
           <Button colorScheme="blue" mr={3} onClick={onClose}>
             Close
           </Button>
-          <Button variant="ghost" onClick={handleUpdate} isLoading={loading}>
-            Update
+          <Button variant="ghost" onClick={handleCreate} isLoading={loading}>
+            Create
           </Button>
         </ModalFooter>
       </ModalContent>

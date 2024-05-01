@@ -66,7 +66,7 @@ export default function BotDetails({ params }) {
       const response = await axios.post(
         `${BASE_URL}api/conversations`,
         {
-          botId: "662d6c2fb95eb989669af775",
+          botId: params.botId,
           message: singleMessage,
         },
         {

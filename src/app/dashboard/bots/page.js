@@ -48,7 +48,7 @@ const Bots = () => {
 
       setBots(response.data);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
     }
   };
 
@@ -105,6 +105,10 @@ const Bots = () => {
               <Heading fontSize="md">{bot.name}</Heading>
             </CardHeader>
             <CardBody px={4} py={2}>
+              <Text mb={2}>
+                <strong>Tone: </strong>
+                {bot.tone}
+              </Text>
               <Text isTruncated={true}>
                 {truncateDescription(bot.description)}
               </Text>
@@ -143,6 +147,7 @@ const Bots = () => {
                   }}
                 />
                 <EditModal
+                  setRefresh={setRefresh}
                   isOpen={editModalOpen}
                   onClose={() => setEditModalOpen(false)}
                   bot={selectedBot}
