@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Divider,
@@ -17,28 +19,47 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import NavItem from "./NavItem";
-import { FiHome, FiCalendar } from "react-icons/fi";
+import { FiHome } from "react-icons/fi";
 import { RiLogoutCircleRLine, RiRobot3Line } from "react-icons/ri";
+import { TiUserAddOutline } from "react-icons/ti";
 import CreateModal from "../Bots/CreateModal";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { BASE_URL } from "@/constants/constants";
 
 const routes = [
   { name: "Dashboard", link: "/dashboard", icon: FiHome },
-  { name: "My bots", link: "/dashboard/bots", icon: FiCalendar },
+  { name: "My bots", link: "/dashboard/bots", icon: RiRobot3Line },
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
   const router = useRouter();
+
+  const getProfile = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}api/users/profile`, {
+        headers: { "x-auth-token": localStorage.getItem("token") },
+      });
+      setUser(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return isMobile ? (
     <Drawer placement={"left"} onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerHeader borderBottomWidth="1px">Basic Drawer</DrawerHeader>
+        <DrawerHeader borderBottomWidth="1px">Bots</DrawerHeader>
         <DrawerBody>
           <Flex p="5%" flexDir="column" w="100%" as="nav">
             {routes.map((route, i) => (
@@ -48,7 +69,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 icon={route.icon}
                 title={route.name}
                 link={route.link}
-                active={window.location.pathname === route.link}
+                // active={window.location.pathname === route.link}
               />
             ))}
             <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
@@ -63,7 +84,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   <MenuButton w="100%">
                     <Flex>
                       <Icon
-                        as={RiRobot3Line}
+                        as={TiUserAddOutline}
                         fontSize="xl"
                         color={"gray.500"}
                       />
@@ -106,9 +127,9 @@ export default function Sidebar({ isOpen, onClose }) {
               <Avatar size="sm" src="avatar-1.jpg" />
               <Flex flexDir="column" ml={4}>
                 <Heading as="h3" size="sm">
-                  Sylwia Weller
+                  {user?.name}
                 </Heading>
-                <Text color="gray">Admin</Text>
+                <Text color="gray">{user?.email}</Text>
               </Flex>
             </Flex>
           </Flex>
@@ -121,6 +142,7 @@ export default function Sidebar({ isOpen, onClose }) {
       zIndex={"1000"}
       h="100vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
+      minW={"250px"}
       w={"300px"}
       flexDir="column"
       justifyContent="space-between"
@@ -134,15 +156,13 @@ export default function Sidebar({ isOpen, onClose }) {
             icon={route.icon}
             title={route.name}
             link={route.link}
-            active={window.location.pathname === route.link}
+            // active={window.location.pathname === route.link}
           />
         ))}
         <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
           <Menu placement="right">
             <Link
               onClick={() => setCreateModalOpen(true)}
-              // href={link}
-              // backgroundColor={active && "#AEC8CA"}
               p={3}
               borderRadius={8}
               _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
@@ -150,7 +170,11 @@ export default function Sidebar({ isOpen, onClose }) {
             >
               <MenuButton w="100%">
                 <Flex>
-                  <Icon as={RiRobot3Line} fontSize="xl" color={"gray.500"} />
+                  <Icon
+                    as={TiUserAddOutline}
+                    fontSize="xl"
+                    color={"gray.500"}
+                  />
                   <Text ml={5}>Create Bot</Text>
                 </Flex>
               </MenuButton>
@@ -190,9 +214,9 @@ export default function Sidebar({ isOpen, onClose }) {
           <Avatar size="sm" src="avatar-1.jpg" />
           <Flex flexDir="column" ml={4}>
             <Heading as="h3" size="sm">
-              Sylwia Weller
+              {user?.name}
             </Heading>
-            <Text color="gray">Admin</Text>
+            <Text color="gray">{user?.email}</Text>
           </Flex>
         </Flex>
       </Flex>

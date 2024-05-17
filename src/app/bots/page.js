@@ -115,11 +115,11 @@ const Bots = () => {
   };
 
   return (
-    <Box bg="gray.100" p={4} h={"100%"} overflow={"auto"}>
+    <Box bg="gray.100" p={4} h={"100%"} overflow={"auto"} width={"100%"}>
       <Heading fontSize="lg" mb={4}>
         Bots
       </Heading>
-      <Flex flexWrap={"wrap"} gap={5}>
+      {/* <Flex flexWrap={"wrap"} gap={5}>
         {bots.map((bot) => (
           <Card
             key={bot.id}
@@ -191,7 +191,7 @@ const Bots = () => {
             </Modal>
           </Card>
         ))}
-      </Flex>
+      </Flex> */}
     </Box>
   );
 };

@@ -1,18 +1,20 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  Button,
-  Flex,
-  IconButton,
-  Text,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Flex, IconButton, Text, useBreakpointValue } from "@chakra-ui/react";
 import Sidebar from "../Sidebar/Sidebar";
 import { IoMenu } from "react-icons/io5";
 
 export default function Header({ children }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    // let loc = window.location.href.split("/");
+    // setTitle(loc[loc.length - 1] === "dashboard" ? "Dashboard" : "Bots");
+  }, []);
+
+  // console.log(window.location.href.split("/"));
 
   const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -36,7 +38,9 @@ export default function Header({ children }) {
               icon={<IoMenu />}
             />
           )}
-          <Text>Home</Text>
+          <Text fontSize={"28px"} fontWeight={500}>
+            {title}
+          </Text>
         </Flex>
         <Flex overflow={"auto"} h={"100%"}>
           {children}

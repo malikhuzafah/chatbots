@@ -1,3 +1,5 @@
+"use client";
+
 import { BASE_URL } from "@/constants/constants";
 import {
   Button,
@@ -33,7 +35,7 @@ export default function CreateModal({ isOpen, onClose }) {
       );
       console.log(response);
       setLoading(false);
-      window.location.reload();
+      // window.location.reload();
       onClose();
     } catch (error) {
       setLoading(false);
