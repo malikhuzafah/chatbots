@@ -37,6 +37,7 @@ export default function Sidebar({ isOpen, onClose }) {
 
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [currentPath, setCurrentPath] = useState("");
 
   const router = useRouter();
 
@@ -53,6 +54,9 @@ export default function Sidebar({ isOpen, onClose }) {
 
   useEffect(() => {
     getProfile();
+    if (typeof window !== "undefined") {
+      setCurrentPath(window.location.pathname);
+    }
   }, []);
 
   return isMobile ? (
@@ -69,7 +73,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 icon={route.icon}
                 title={route.name}
                 link={route.link}
-                // active={window.location.pathname === route.link}
+                active={currentPath === route.link}
               />
             ))}
             <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
@@ -156,7 +160,7 @@ export default function Sidebar({ isOpen, onClose }) {
             icon={route.icon}
             title={route.name}
             link={route.link}
-            // active={window.location.pathname === route.link}
+            active={currentPath === route.link}
           />
         ))}
         <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>

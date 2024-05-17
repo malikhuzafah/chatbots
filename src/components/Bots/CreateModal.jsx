@@ -17,6 +17,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function CreateModal({ isOpen, onClose }) {
@@ -24,6 +25,8 @@ export default function CreateModal({ isOpen, onClose }) {
   const [description, setDescription] = useState("");
   const [tone, setTone] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const handleCreate = async () => {
     setLoading(true);
@@ -35,7 +38,7 @@ export default function CreateModal({ isOpen, onClose }) {
       );
       console.log(response);
       setLoading(false);
-      // window.location.reload();
+      router.refresh();
       onClose();
     } catch (error) {
       setLoading(false);
