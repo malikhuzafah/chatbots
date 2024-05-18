@@ -8,20 +8,18 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { IoMdArrowBack, IoMdSend } from "react-icons/io";
+import { BsStars } from "react-icons/bs";
 
 export default function BotDetails({ params }) {
   const [botDetails, setBotDetails] = useState({});
   const [singleMessage, setSingleMessage] = useState("");
   const [messages, setMessages] = useState([]);
-
-  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const router = useRouter();
 
@@ -92,35 +90,45 @@ export default function BotDetails({ params }) {
     <Flex
       flexDir={"column"}
       h={"100vh"}
-      // px={10}
       pb={10}
       w={"100%"}
       overflow={"hidden"}
-      bgColor={"gray.100"}
+      bgColor={"#101014"}
     >
       <Flex h={"95%"} flexDirection={"column"}>
         <Flex
-          justify={"center"}
+          justify={"space-between"}
           w={"100%"}
           position={"relative"}
           p={5}
-          bgColor={"white"}
+          bgColor={"#1b1b1c"}
           px={10}
         >
           <IconButton
             isRound
             icon={<IoMdArrowBack />}
-            position={"absolute"}
-            left={5}
             onClick={goBack}
+            bg={"linear-gradient(to right, #4e54c8, #8f94fb)"}
+            color={"#ffffff"}
+            _hover={{
+              bg: "linear-gradient(to right, #6a11cb, #2575fc)",
+            }}
           />
 
-          <Heading as="h3" size="lg">
+          <Heading size="lg" color={"#ffffff"} fontWeight={"500"}>
             {botDetails.name}
           </Heading>
+          <IconButton
+            color={"white"}
+            borderRadius={"full"}
+            aria-label="AI Icon Button"
+            icon={<BsStars />}
+            bg={"linear-gradient(to right, #4e54c8, #8f94fb)"}
+            _hover={{}}
+          />
         </Flex>
         <Flex
-          px={10}
+          px={{ base: 10, md: 20 }}
           h={"100%"}
           flexDirection={"column-reverse"}
           overflow={"auto"}
@@ -137,24 +145,24 @@ export default function BotDetails({ params }) {
               >
                 <Flex justifyContent={"flex-end"} px={4} py={2}>
                   <Box
-                    bg={"green.500"}
+                    bg={"linear-gradient(to right, #383838, #4c4c4c)"}
                     color="white"
                     p={2}
                     px={5}
                     borderRadius="25px"
-                    maxWidth={isMobile ? "200px" : "70%"}
+                    maxWidth={{ base: "200px", md: "70%" }}
                   >
                     {message.message}
                   </Box>
                 </Flex>
                 <Flex justifyContent={"flex-start"} px={4} py={2}>
                   <Box
-                    bg={"blue.500"}
+                    bg={"linear-gradient(to right, #4e54c8, #8f94fb)"}
                     color="white"
                     p={2}
                     px={5}
                     borderRadius="25px"
-                    maxWidth={isMobile ? "200px" : "70%"}
+                    maxWidth={{ base: "200px", md: "70%" }}
                   >
                     {message.response}
                   </Box>
@@ -164,20 +172,30 @@ export default function BotDetails({ params }) {
           </AnimatePresence>
         </Flex>
       </Flex>
-      <Flex px={10}>
+      <Flex px={{ base: 10, md: 20 }}>
         <InputGroup size="lg" onSubmit={sendMessage}>
           <Input
             pr="4.5rem"
             type="text"
             borderRadius={"full"}
-            placeholder="Enter Message ..."
+            placeholder="Enter Message..."
             value={singleMessage}
             onChange={(e) => {
               setSingleMessage(e.target.value);
             }}
+            bgColor={"#ffffff"}
           />
           <InputRightElement width="4.5rem">
-            <IconButton isRound icon={<IoMdSend />} onClick={sendMessage} />
+            <IconButton
+              isRound
+              icon={<IoMdSend />}
+              onClick={sendMessage}
+              bg="linear-gradient(to right, #383838, #4c4c4c)"
+              color={"#ffffff"}
+              _hover={{
+                bg: "linear-gradient(to right, #4e54c8, #8f94fb)",
+              }}
+            />
           </InputRightElement>
         </InputGroup>
       </Flex>
