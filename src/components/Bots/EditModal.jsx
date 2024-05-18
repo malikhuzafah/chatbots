@@ -18,6 +18,8 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BsStars } from "react-icons/bs";
+import { IoCloseOutline } from "react-icons/io5";
 
 export default function ({ isOpen, onClose, bot, setRefresh }) {
   const [name, setName] = useState("");
@@ -52,20 +54,26 @@ export default function ({ isOpen, onClose, bot, setRefresh }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={"lg"} isCentered>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
+      <ModalContent bg={"#414345"} color={"#ffffff"}>
+        <ModalHeader fontWeight={"450"}>
           <Text>Edit Modal</Text>
-          <ModalCloseButton />
+          <ModalCloseButton
+            borderRadius={"full"}
+            _hover={{
+              bg: "linear-gradient(to right, #4e54c8, #8f94fb)",
+              color: "white",
+            }}
+          />
         </ModalHeader>
         <ModalBody>
           <Flex flexDirection={"column"} gap={4}>
             <FormControl>
-              <FormLabel>Name:</FormLabel>
+              <FormLabel fontWeight={"450"}>Name:</FormLabel>
               <Input value={name} onChange={(e) => setName(e.target.value)} />
               {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
             </FormControl>
             <FormControl>
-              <FormLabel>Description:</FormLabel>
+              <FormLabel fontWeight={"450"}>Description:</FormLabel>
               <Textarea
                 rows={5}
                 value={description}
@@ -74,17 +82,40 @@ export default function ({ isOpen, onClose, bot, setRefresh }) {
               {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
             </FormControl>
             <FormControl>
-              <FormLabel>Tone:</FormLabel>
+              <FormLabel fontWeight={"450"}>Tone:</FormLabel>
               <Input value={tone} onChange={(e) => setTone(e.target.value)} />
               {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
             </FormControl>
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={onClose}
+            bg={"linear-gradient(to right, #F44336, #E57373)"}
+            _hover={{
+              bg: "linear-gradient(to right, #D32F2F, #EF5350)",
+            }}
+            fontWeight={"400"}
+            borderRadius={"full"}
+            leftIcon={<IoCloseOutline size={20} />}
+          >
             Close
           </Button>
-          <Button variant="ghost" onClick={handleUpdate} isLoading={loading}>
+          <Button
+            variant="ghost"
+            onClick={handleUpdate}
+            isLoading={loading}
+            borderRadius={"full"}
+            bg={"linear-gradient(to right, #4568dc, #b06ab3)"}
+            color={"#ffffff"}
+            fontWeight={"400"}
+            _hover={{
+              bg: "linear-gradient(to right, #6a11cb, #2575fc)",
+            }}
+            rightIcon={<BsStars size={16} />}
+          >
             Update
           </Button>
         </ModalFooter>
