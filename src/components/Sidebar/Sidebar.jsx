@@ -7,7 +7,6 @@ import {
   Drawer,
   DrawerBody,
   DrawerContent,
-  DrawerHeader,
   DrawerOverlay,
   Flex,
   Heading,
@@ -16,7 +15,6 @@ import {
   Menu,
   MenuButton,
   Text,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import NavItem from "./NavItem";
 import { FiHome } from "react-icons/fi";
@@ -33,8 +31,6 @@ const routes = [
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
-  const isMobile = useBreakpointValue({ base: true, md: false });
-
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [currentPath, setCurrentPath] = useState("");
@@ -48,6 +44,7 @@ export default function Sidebar({ isOpen, onClose }) {
       });
       setUser(response.data);
     } catch (error) {
+      router.push("/auth");
       console.log(error);
     }
   };
@@ -59,176 +56,188 @@ export default function Sidebar({ isOpen, onClose }) {
     }
   }, []);
 
-  return isMobile ? (
-    <Drawer placement={"left"} onClose={onClose} isOpen={isOpen}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerHeader borderBottomWidth="1px">Bots</DrawerHeader>
-        <DrawerBody>
-          <Flex p="5%" flexDir="column" w="100%" as="nav">
-            {routes.map((route, i) => (
-              <NavItem
-                key={i}
-                navSize={"large"}
-                icon={route.icon}
-                title={route.name}
-                link={route.link}
-                active={currentPath === route.link}
-              />
-            ))}
-            <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
-              <Menu placement="right">
-                <Link
-                  onClick={() => setCreateModalOpen(true)}
-                  p={3}
-                  borderRadius={8}
-                  _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
-                  w={"100%"}
-                >
-                  <MenuButton w="100%">
-                    <Flex>
-                      <Icon
-                        as={TiUserAddOutline}
-                        fontSize="xl"
-                        color={"gray.500"}
-                      />
-                      <Text ml={5}>Create Bot</Text>
-                    </Flex>
-                  </MenuButton>
-                </Link>
-              </Menu>
-            </Flex>
-            <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
-              <Menu placement="right">
-                <Link
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    router.replace("/auth");
-                  }}
-                  p={3}
-                  borderRadius={8}
-                  _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
-                  w={"100%"}
-                >
-                  <MenuButton w="100%">
-                    <Flex>
-                      <Icon
-                        as={RiLogoutCircleRLine}
-                        fontSize="xl"
-                        color={"gray.500"}
-                      />
-                      <Text ml={5}>Logout</Text>
-                    </Flex>
-                  </MenuButton>
-                </Link>
-              </Menu>
-            </Flex>
-          </Flex>
-
-          <Flex p="5%" flexDir="column" w="100%" mb={4}>
-            <Divider />
-            <Flex mt={4} align="center">
-              <Avatar size="sm" src="avatar-1.jpg" />
-              <Flex flexDir="column" ml={4}>
-                <Heading as="h3" size="sm">
-                  {user?.name}
-                </Heading>
-                <Text color="gray">{user?.email}</Text>
+  return (
+    <>
+      <Drawer
+        placement={"left"}
+        onClose={onClose}
+        isOpen={isOpen}
+        display={{ base: "flex", md: "none" }}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerBody bgColor={"#1b1b1c"}>
+            <Flex p="5%" flexDir="column" w="100%" as="nav">
+              {routes.map((route, i) => (
+                <NavItem
+                  key={i}
+                  navSize={"large"}
+                  icon={route.icon}
+                  title={route.name}
+                  link={route.link}
+                  active={currentPath === route.link}
+                />
+              ))}
+              <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
+                <Menu placement="right">
+                  <Link
+                    onClick={() => setCreateModalOpen(true)}
+                    p={3}
+                    borderRadius={8}
+                    _hover={{
+                      textDecor: "none",
+                      background: "linear-gradient(to right, #4568dc, #b06ab3)",
+                    }}
+                    color={"#ffffff"}
+                    w={"100%"}
+                  >
+                    <MenuButton w="100%">
+                      <Flex>
+                        <Icon as={TiUserAddOutline} fontSize="xl" />
+                        <Text ml={5}>Create Bot</Text>
+                      </Flex>
+                    </MenuButton>
+                  </Link>
+                </Menu>
+              </Flex>
+              <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
+                <Menu placement="right">
+                  <Link
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      router.replace("/auth");
+                    }}
+                    p={3}
+                    borderRadius={8}
+                    _hover={{
+                      textDecor: "none",
+                      background: "linear-gradient(to right, #4568dc, #b06ab3)",
+                    }}
+                    color={"#ffffff"}
+                    w={"100%"}
+                  >
+                    <MenuButton w="100%">
+                      <Flex>
+                        <Icon as={RiLogoutCircleRLine} fontSize="xl" />
+                        <Text ml={5}>Logout</Text>
+                      </Flex>
+                    </MenuButton>
+                  </Link>
+                </Menu>
               </Flex>
             </Flex>
-          </Flex>
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
-  ) : (
-    <Flex
-      pos="sticky"
-      zIndex={"1000"}
-      h="100vh"
-      boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
-      minW={"250px"}
-      w={"300px"}
-      flexDir="column"
-      justifyContent="space-between"
-      overflow={"hidden"}
-    >
-      <Flex p="5%" flexDir="column" w="100%" as="nav">
-        {routes.map((route, i) => (
-          <NavItem
-            key={i}
-            navSize={"large"}
-            icon={route.icon}
-            title={route.name}
-            link={route.link}
-            active={currentPath === route.link}
-          />
-        ))}
-        <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
-          <Menu placement="right">
-            <Link
-              onClick={() => setCreateModalOpen(true)}
-              p={3}
-              borderRadius={8}
-              _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
-              w={"100%"}
-            >
-              <MenuButton w="100%">
-                <Flex>
-                  <Icon
-                    as={TiUserAddOutline}
-                    fontSize="xl"
-                    color={"gray.500"}
-                  />
-                  <Text ml={5}>Create Bot</Text>
-                </Flex>
-              </MenuButton>
-            </Link>
-          </Menu>
-        </Flex>
-        <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
-          <Menu placement="right">
-            <Link
-              onClick={() => {
-                localStorage.removeItem("token");
-                router.replace("/auth");
-              }}
-              p={3}
-              borderRadius={8}
-              _hover={{ textDecor: "none", backgroundColor: "#AEC8CA" }}
-              w={"100%"}
-            >
-              <MenuButton w="100%">
-                <Flex>
-                  <Icon
-                    as={RiLogoutCircleRLine}
-                    fontSize="xl"
-                    color={"gray.500"}
-                  />
-                  <Text ml={5}>Logout</Text>
-                </Flex>
-              </MenuButton>
-            </Link>
-          </Menu>
-        </Flex>
-      </Flex>
 
-      <Flex p="5%" flexDir="column" w="100%" mb={4}>
-        <Divider />
-        <Flex mt={4} align="center">
-          <Avatar size="sm" src="avatar-1.jpg" />
-          <Flex flexDir="column" ml={4}>
-            <Heading as="h3" size="sm">
-              {user?.name}
-            </Heading>
-            <Text color="gray">{user?.email}</Text>
+            <Flex p="5%" flexDir="column" w="100%" mb={4}>
+              <Divider />
+              <Flex mt={4} align="center">
+                <Avatar size="sm" src="avatar-1.jpg" />
+                <Flex flexDir="column" ml={4}>
+                  <Heading as="h3" size="sm" color={"#ffffff"}>
+                    {user?.name}
+                  </Heading>
+                  <Text color={"#ffffff"}>{user?.email}</Text>
+                </Flex>
+              </Flex>
+            </Flex>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+      <Flex
+        pos="sticky"
+        zIndex={"1000"}
+        h="100vh"
+        boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
+        minW={"250px"}
+        w={"300px"}
+        flexDir="column"
+        justifyContent="space-between"
+        overflow={"hidden"}
+        display={{ base: "none", md: "flex" }}
+        bgColor={"#1b1b1c"}
+      >
+        <Flex p="5%" flexDir="column" w="100%" as="nav">
+          {routes.map((route, i) => (
+            <NavItem
+              key={i}
+              navSize={"large"}
+              icon={route.icon}
+              title={route.name}
+              link={route.link}
+              active={currentPath === route.link}
+            />
+          ))}
+          <Flex mt={30} flexDir="column" w="100%" alignItems={"flex-start"}>
+            <Menu placement="right">
+              <Link
+                onClick={() => setCreateModalOpen(true)}
+                p={3}
+                borderRadius={8}
+                _hover={{
+                  textDecor: "none",
+                  background: "linear-gradient(to right, #4568dc, #b06ab3)",
+                }}
+                color={"#ffffff"}
+                w={"100%"}
+              >
+                <MenuButton w="100%">
+                  <Flex>
+                    <Icon as={TiUserAddOutline} fontSize="xl" />
+                    <Text ml={5}>Create Bot</Text>
+                  </Flex>
+                </MenuButton>
+              </Link>
+            </Menu>
+          </Flex>
+          <Flex
+            mt={30}
+            flexDir="column"
+            w="100%"
+            alignItems={"flex-start"}
+            color={"#ffffff"}
+          >
+            <Menu placement="right">
+              <Link
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  router.replace("/auth");
+                }}
+                p={3}
+                borderRadius={8}
+                _hover={{
+                  textDecor: "none",
+                  background: "linear-gradient(to right, #4568dc, #b06ab3)",
+                }}
+                w={"100%"}
+              >
+                <MenuButton w="100%">
+                  <Flex>
+                    <Icon as={RiLogoutCircleRLine} fontSize="xl" />
+                    <Text ml={5}>Logout</Text>
+                  </Flex>
+                </MenuButton>
+              </Link>
+            </Menu>
           </Flex>
         </Flex>
-      </Flex>
 
-      <CreateModal
-        isOpen={createModalOpen}
-        onClose={() => setCreateModalOpen(false)}
-      />
-    </Flex>
+        <Flex p="5%" flexDir="column" w="100%" mb={4}>
+          <Divider />
+          <Flex mt={4} align="center">
+            <Avatar size="sm" src="avatar-1.jpg" />
+            <Flex flexDir="column" ml={4}>
+              <Heading as="h3" size="sm" color={"#ffffff"}>
+                {user?.name}
+              </Heading>
+              <Text color="#ffffff">{user?.email}</Text>
+            </Flex>
+          </Flex>
+        </Flex>
+
+        <CreateModal
+          isOpen={createModalOpen}
+          onClose={() => setCreateModalOpen(false)}
+        />
+      </Flex>
+    </>
   );
 }
