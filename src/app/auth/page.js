@@ -1,5 +1,3 @@
-// pages/login.js
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -18,7 +16,7 @@ import axios from "axios";
 import { BASE_URL } from "@/constants/constants";
 
 export default function Auth() {
-  const router = useRouter(); // Move the useRouter hook inside the component function
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -56,21 +54,12 @@ export default function Auth() {
       return;
     }
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/users/login",
-        {
-          email,
-          password,
-        }
-      );
-
-      console.log(response);
-
+      const response = await axios.post(`${BASE_URL}api/users/login`, {
+        email,
+        password,
+      });
       localStorage.setItem("token", response?.data?.token);
       router.push("/");
-      // Your login logic here
-      // Simulated successful login
-      //   router.push("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
       setErrorMessage("An error occurred. Please try again later.");
@@ -79,16 +68,13 @@ export default function Auth() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    // Basic validation
     if (!email || !password || !name) {
       setErrorMessage("Please enter name, email and password");
       return;
     }
-    // Example of sending login request
     try {
-      // Your login logic here
-      // Simulated successful login
-      //   router.push("/dashboard");
+      localStorage.setItem("token", response?.data?.token);
+      router.push("/");
     } catch (error) {
       console.error("Login error:", error);
       setErrorMessage("An error occurred. Please try again later.");
