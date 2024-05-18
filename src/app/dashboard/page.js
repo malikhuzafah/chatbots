@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Flex } from "@chakra-ui/react";
-import DashboardCard from "@/components/Dashboard/dashboardCard";
+import DashboardCard from "@/components/Dashboard/DashboardCard";
 import { GoDependabot } from "react-icons/go";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import axios from "axios";
