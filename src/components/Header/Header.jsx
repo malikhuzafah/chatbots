@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Flex, IconButton, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, IconButton, Text } from "@chakra-ui/react";
 import Sidebar from "../Sidebar/Sidebar";
 import { IoMenu } from "react-icons/io5";
 
@@ -10,13 +10,9 @@ export default function Header({ children }) {
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    // let loc = window.location.href.split("/");
-    // setTitle(loc[loc.length - 1] === "dashboard" ? "Dashboard" : "Bots");
+    let loc = window.location.href.split("/");
+    setTitle(loc[loc.length - 1] === "dashboard" ? "Dashboard" : "Bots");
   }, []);
-
-  // console.log(window.location.href.split("/"));
-
-  const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
     <Flex overflow={"hidden"} h={"100vh"}>
@@ -24,25 +20,29 @@ export default function Header({ children }) {
       <Flex flexDirection={"column"} w={"100%"}>
         <Flex
           position={"relative"}
-          justify={"center"}
+          px={10}
           h={"80px"}
           w={"100%"}
-          bgColor={"white"}
           align={"center"}
+          bgColor={"#1b1b1c"}
+          gap={5}
         >
-          {isMobile && (
-            <IconButton
-              position={"absolute"}
-              left={5}
-              onClick={() => setIsOpen(true)}
-              icon={<IoMenu />}
-            />
-          )}
-          <Text fontSize={"28px"} fontWeight={500}>
+          <IconButton
+            isRound
+            display={{ base: "flex", md: "none" }}
+            onClick={() => setIsOpen(true)}
+            bg={"linear-gradient(to right, #4568dc, #b06ab3)"}
+            icon={<IoMenu />}
+            color={"#ffffff"}
+            _hover={{
+              bg: "linear-gradient(to right, #6a11cb, #2575fc)",
+            }}
+          />
+          <Text fontSize={"28px"} fontWeight={400} color={"#ffffff"}>
             {title}
           </Text>
         </Flex>
-        <Flex overflow={"auto"} h={"100%"}>
+        <Flex overflow={"auto"} h={"100%"} bgColor={"#101014"}>
           {children}
         </Flex>
       </Flex>
