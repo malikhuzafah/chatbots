@@ -12,16 +12,16 @@ export default function NavItem({ icon, title, active, navSize, link }) {
       <Menu placement="right">
         <Link
           href={link}
-          backgroundColor={active && "#AEC8CA"}
+          background={active && "linear-gradient(to right, #4568dc, #b06ab3)"}
           p={3}
           borderRadius={8}
           _hover={{
             textDecor: "none",
-            backgroundColor: "#AEC8CA",
+            background: "linear-gradient(to right, #4568dc, #b06ab3)",
             color: "#ffffff",
           }}
           w={navSize == "large" && "100%"}
-          color={active && "#ffffff"}
+          color={"#ffffff"}
         >
           <MenuButton w="100%">
             <Flex>
