@@ -11,6 +11,7 @@ import {
   Heading,
   Text,
   useColorMode,
+  Flex,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { BASE_URL } from "@/constants/constants";
@@ -22,6 +23,7 @@ export default function Auth() {
   const [errorMessage, setErrorMessage] = useState("");
   const [name, setName] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const verifyLogin = async () => {
     try {
@@ -49,6 +51,7 @@ export default function Auth() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (!email || !password) {
       setErrorMessage("Please enter both email and password");
       return;
@@ -64,21 +67,29 @@ export default function Auth() {
       console.error("Login error:", error);
       setErrorMessage("An error occurred. Please try again later.");
     }
+    setIsLoading(false);
   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (!email || !password || !name) {
       setErrorMessage("Please enter name, email and password");
       return;
     }
     try {
+      const response = await axios.post(`${BASE_URL}api/users/register`, {
+        email,
+        password,
+        name,
+      });
       localStorage.setItem("token", response?.data?.token);
       router.push("/");
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("Signup error:", error);
       setErrorMessage("An error occurred. Please try again later.");
     }
+    setIsLoading(false);
   };
 
   return (
@@ -87,71 +98,84 @@ export default function Auth() {
       justifyContent="center"
       alignItems="center"
       height="100vh"
-      bg={colorMode === "dark" ? "gray.800" : "gray.50"}
+      bg={"#101014"}
     >
       <Box
-        borderWidth="1px"
         borderRadius="lg"
         p={8}
         width={{ base: "90%", sm: "80%", md: "50%" }}
-        bg={colorMode === "dark" ? "gray.700" : "white"}
+        bg={"linear-gradient(to right, #232526, #414345)"}
         boxShadow="md"
       >
-        <Heading mb={4} color={colorMode === "dark" ? "white" : "gray.800"}>
+        <Heading mb={4} fontWeight={450} color={"#ffffff"}>
           {isSignUp ? "Sign Up" : "Login"}
         </Heading>
         <form onSubmit={isSignUp ? handleSignup : handleLogin}>
-          {errorMessage && <Text color="red">{errorMessage}</Text>}
-          {isSignUp && (
-            <FormControl id="name" mt={4} isRequired>
-              <FormLabel color={colorMode === "dark" ? "white" : "gray.800"}>
-                Name
-              </FormLabel>
+          <Flex flexDir={"column"} gap={3}>
+            {errorMessage && <Text color="red">{errorMessage}</Text>}
+            {isSignUp && (
+              <FormControl id="name" mt={4} isRequired>
+                <FormLabel color={"#ffffff"}>Name</FormLabel>
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  bgColor={"#ffffff"}
+                  placeholder="Enter Name"
+                />
+              </FormControl>
+            )}
+            <FormControl id="email" isRequired>
+              <FormLabel color={"#ffffff"}>Email</FormLabel>
               <Input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                bg={colorMode === "dark" ? "gray.800" : "white"}
-                color={colorMode === "dark" ? "white" : "gray.800"}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                bgColor={"#ffffff"}
+                placeholder="Enter Email"
               />
             </FormControl>
-          )}
-          <FormControl id="email" isRequired>
-            <FormLabel color={colorMode === "dark" ? "white" : "gray.800"}>
-              Email
-            </FormLabel>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              bg={colorMode === "dark" ? "gray.800" : "white"}
-              color={colorMode === "dark" ? "white" : "gray.800"}
-            />
-          </FormControl>
-          <FormControl id="password" mt={4} isRequired>
-            <FormLabel color={colorMode === "dark" ? "white" : "gray.800"}>
-              Password
-            </FormLabel>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              bg={colorMode === "dark" ? "gray.800" : "white"}
-              color={colorMode === "dark" ? "white" : "gray.800"}
-            />
-          </FormControl>
+            <FormControl id="password" mt={4} isRequired>
+              <FormLabel color={"#ffffff"}>Password</FormLabel>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                bgColor={"#ffffff"}
+                placeholder="Enter Password"
+              />
+            </FormControl>
 
-          <Button mt={4} colorScheme="blue" type="submit">
-            {isSignUp ? "Sign Up" : "Login"}
-          </Button>
-          <Button
-            mt={4}
-            ml={2}
-            colorScheme="gray"
-            onClick={() => setIsSignUp(!isSignUp)}
-          >
-            {isSignUp ? "Switch to Login" : "Switch to Sign Up"}
-          </Button>
+            <Flex gap={2} mt={4} justify={"flex-end"}>
+              <Button
+                onClick={() => setIsSignUp(!isSignUp)}
+                variant={"ghost"}
+                color={"#ffffff"}
+                fontWeight={"400"}
+                _hover={{
+                  bgColor: "#6a11cb",
+                }}
+                borderRadius={"full"}
+                isDisabled={isLoading}
+              >
+                {isSignUp ? "Switch to Login" : "Switch to Sign Up"}
+              </Button>
+              <Button
+                type="submit"
+                borderRadius={"full"}
+                bg={"linear-gradient(to right, #4568dc, #b06ab3)"}
+                color={"#ffffff"}
+                fontWeight={"400"}
+                _hover={{
+                  bg: "linear-gradient(to right, #6a11cb, #2575fc)",
+                }}
+                transition={"background 0.3s ease"}
+                isLoading={isLoading}
+              >
+                {isSignUp ? "Sign Up" : "Login"}
+              </Button>
+            </Flex>
+          </Flex>
         </form>
       </Box>
     </Box>
