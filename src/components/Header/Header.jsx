@@ -12,7 +12,7 @@ export default function Header({ children }) {
   useEffect(() => {
     let loc = window.location.href.split("/");
     setTitle(loc[loc.length - 1] === "dashboard" ? "Dashboard" : "Bots");
-  }, []);
+  }, [window.location.href]);
 
   return (
     <Flex overflow={"hidden"} h={"100vh"}>
