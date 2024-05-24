@@ -40,8 +40,13 @@ export default function CreateModal({ isOpen, onClose }) {
       );
       console.log(response);
       setLoading(false);
-      router.refresh();
       onClose();
+      let loc = window.location.href.split("/");
+      if (loc[loc.length - 1] === "bots") {
+        router.refresh();
+      } else {
+        router.push("/dashboard/bots");
+      }
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -66,7 +71,13 @@ export default function CreateModal({ isOpen, onClose }) {
           <Flex flexDirection={"column"} gap={4}>
             <FormControl>
               <FormLabel fontWeight={"450"}>Name:</FormLabel>
-              <Input value={name} onChange={(e) => setName(e.target.value)} />
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                bgColor={"#ffffff"}
+                color={"#000000"}
+                placeholder="Enter Name"
+              />
               {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
             </FormControl>
             <FormControl>
@@ -75,12 +86,21 @@ export default function CreateModal({ isOpen, onClose }) {
                 rows={5}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                bgColor={"#ffffff"}
+                color={"#000000"}
+                placeholder="Enter Description"
               />
               {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
             </FormControl>
             <FormControl>
               <FormLabel fontWeight={"450"}>Tone:</FormLabel>
-              <Input value={tone} onChange={(e) => setTone(e.target.value)} />
+              <Input
+                value={tone}
+                onChange={(e) => setTone(e.target.value)}
+                bgColor={"#ffffff"}
+                color={"#000000"}
+                placeholder="Enter Tone"
+              />
               {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
             </FormControl>
           </Flex>
