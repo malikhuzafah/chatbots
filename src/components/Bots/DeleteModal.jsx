@@ -8,11 +8,16 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { IoCloseOutline } from "react-icons/io5";
 
-export default function DeleteModal({ isOpen, onClose, handleDelete }) {
+export default function DeleteModal({
+  isOpen,
+  onClose,
+  handleDelete,
+  isLoading,
+}) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
@@ -53,6 +58,7 @@ export default function DeleteModal({ isOpen, onClose, handleDelete }) {
             }}
             borderRadius={"full"}
             rightIcon={<AiOutlineDelete color="white" fontSize={"20px"} />}
+            isLoading={isLoading}
           >
             Delete
           </Button>
