@@ -69,7 +69,13 @@ export default function ({ isOpen, onClose, bot, setRefresh }) {
           <Flex flexDirection={"column"} gap={4}>
             <FormControl>
               <FormLabel fontWeight={"450"}>Name:</FormLabel>
-              <Input value={name} onChange={(e) => setName(e.target.value)} />
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                bgColor={"#ffffff"}
+                color={"#000000"}
+                placeholder="Enter Name"
+              />
               {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
             </FormControl>
             <FormControl>
@@ -78,12 +84,21 @@ export default function ({ isOpen, onClose, bot, setRefresh }) {
                 rows={5}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                bgColor={"#ffffff"}
+                color={"#000000"}
+                placeholder="Enter Description"
               />
               {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
             </FormControl>
             <FormControl>
               <FormLabel fontWeight={"450"}>Tone:</FormLabel>
-              <Input value={tone} onChange={(e) => setTone(e.target.value)} />
+              <Input
+                value={tone}
+                onChange={(e) => setTone(e.target.value)}
+                bgColor={"#ffffff"}
+                color={"#000000"}
+                placeholder="Enter Tone"
+              />
               {/* <FormHelperText>We'll never share your email.</FormHelperText> */}
             </FormControl>
           </Flex>
