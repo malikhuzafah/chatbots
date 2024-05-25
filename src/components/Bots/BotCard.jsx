@@ -31,7 +31,7 @@ export default function BotCard({
       shadow="lg"
       borderRadius="lg"
       color={"#ffffff"}
-      maxH={"250px"}
+      maxH={"300px"}
     >
       <CardHeader py={4} px={4}>
         <Flex justify={"space-between"} align={"center"}>
