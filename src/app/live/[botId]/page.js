@@ -15,11 +15,13 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { IoMdArrowBack, IoMdSend } from "react-icons/io";
 import { BsStars } from "react-icons/bs";
+import ReactMarkdown from "react-markdown";
 
 export default function BotDetails({ params }) {
   const [botDetails, setBotDetails] = useState({});
   const [singleMessage, setSingleMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [isSend, setIsSend] = useState(false);
 
   const router = useRouter();
 
@@ -60,6 +62,7 @@ export default function BotDetails({ params }) {
 
   const sendMessage = async () => {
     try {
+      setIsSend(true);
       if (!singleMessage) return;
       const response = await axios.post(
         `${BASE_URL}api/conversations`,
@@ -78,6 +81,7 @@ export default function BotDetails({ params }) {
     } catch (error) {
       console.log(error);
     }
+    setIsSend(false);
   };
 
   const messageVariants = {
@@ -135,6 +139,27 @@ export default function BotDetails({ params }) {
           mb={10}
         >
           <AnimatePresence initial={false} mode="wait">
+            {singleMessage && isSend && (
+              <motion.div
+                initial="initial"
+                animate="enter"
+                exit="exit"
+                variants={messageVariants}
+              >
+                <Flex justifyContent={"flex-end"} px={4} py={2}>
+                  <Box
+                    bg={"linear-gradient(to right, #383838, #4c4c4c)"}
+                    color="white"
+                    p={2}
+                    px={5}
+                    borderRadius="25px"
+                    maxWidth={{ base: "200px", md: "70%" }}
+                  >
+                    {singleMessage}
+                  </Box>
+                </Flex>
+              </motion.div>
+            )}
             {messages.map((message, index) => (
               <motion.div
                 key={index}
@@ -164,7 +189,7 @@ export default function BotDetails({ params }) {
                     borderRadius="25px"
                     maxWidth={{ base: "200px", md: "70%" }}
                   >
-                    {message.response}
+                    <ReactMarkdown>{message.response}</ReactMarkdown>
                   </Box>
                 </Flex>
               </motion.div>
@@ -179,7 +204,7 @@ export default function BotDetails({ params }) {
             type="text"
             borderRadius={"full"}
             placeholder="Enter Message..."
-            value={singleMessage}
+            value={isSend ? "" : singleMessage}
             onChange={(e) => {
               setSingleMessage(e.target.value);
             }}
@@ -195,6 +220,7 @@ export default function BotDetails({ params }) {
               _hover={{
                 bg: "linear-gradient(to right, #4e54c8, #8f94fb)",
               }}
+              isLoading={isSend}
             />
           </InputRightElement>
         </InputGroup>
