@@ -65,7 +65,7 @@ export default function Auth() {
       router.push("/");
     } catch (error) {
       console.error("Login error:", error);
-      setErrorMessage("An error occurred. Please try again later.");
+      setErrorMessage(error.message);
     }
     setIsLoading(false);
   };
@@ -87,7 +87,7 @@ export default function Auth() {
       router.push("/");
     } catch (error) {
       console.error("Signup error:", error);
-      setErrorMessage("An error occurred. Please try again later.");
+      setErrorMessage(error.message);
     }
     setIsLoading(false);
   };
