@@ -105,3 +105,19 @@ a {
     color-scheme: dark;
   }
 } */
+
+/* custom-scrollbar.css */
+*::-webkit-scrollbar {
+  width: 8px; /* Adjust scrollbar width */
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Set track background color */
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #999; /* Set thumb background color */
+  border-radius: 10px; /* Apply rounded corners */
+}
